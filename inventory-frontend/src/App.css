@@ -6,3 +6,7 @@
 nav {
   background-color: #27002c;
 }
+
+input[type="checkbox"] {
+  align-items: center;
+}
