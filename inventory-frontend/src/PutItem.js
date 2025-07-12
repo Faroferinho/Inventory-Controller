@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import './Login.css';
 
-function App() {
+function PutItem() {
   // Alterar esse useEffect para definir o título da página
   useEffect(() => {
     document.title = 'Inventory - Register Item';
@@ -17,6 +17,13 @@ function App() {
             Item Name:
           </label>
           <input className="w3-input w3-border w3-round-xxlarge" type="text" name="itemName" required />
+        </div>
+
+        <div className="w3-section w3-padding-16">
+          <label className="fixright" htmlFor="itemName">
+            Description:
+          </label>
+          <input className="w3-input w3-border w3-round-xxlarge" type="text" name="itemDescription" required />
         </div>
         
         <div className="w3-section w3-padding-16">
@@ -46,4 +53,4 @@ function App() {
   );
 }
 
-export default App;
+export default PutItem;

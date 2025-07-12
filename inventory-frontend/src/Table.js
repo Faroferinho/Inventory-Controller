@@ -3,9 +3,12 @@ import './App.css';
 
 function Table() {
     // Alterar esse useEffect para definir o título da página
-      useEffect(() => {
+    useEffect(() => {
         document.title = 'Inventory - Table';
-      }, []);
+    }, []);
+
+    const listItems = localStorage.getItem('items');
+    const items = listItems ? JSON.parse(listItems) : [];
 
     return (
         <div className="App">
@@ -14,38 +17,28 @@ function Table() {
                     <tr className="w3-indigo">
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Age</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Available</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>John Doe</td>
-                        <td>30</td>
-                        <td>
-                            <button className="w3-button w3-green">Edit</button>
-                            <button className="w3-button w3-red">Delete</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Jane Smith</td>
-                        <td>25</td>
-                        <td>
-                            <button className="w3-button w3-green">Edit</button>
-                            <button className="w3-button w3-red">Delete</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Mike Johnson</td>
-                        <td>40</td>
-                        <td>
-                            <button className="w3-button w3-green">Edit</button>
-                            <button className="w3-button w3-red">Delete</button>
-                        </td>
-                    </tr>
+                    {items.map((item, index) => (
+                        <tr key={index}>
+                            <td>{item.id}</td>
+                            <td>{item.name}</td>
+                            <td>{item.description}</td>
+                            <td>{item.value}</td>
+                            <td>{item.quantity}</td>
+                            <td>{item.available ? 'Yes' : 'No'}</td>
+                            <td>
+                                <button className="w3-button w3-indigo w3-round-xlarge">Edit</button>
+                                <button className="w3-button w3-red w3-round-xlarge">Delete</button>
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
         </div>

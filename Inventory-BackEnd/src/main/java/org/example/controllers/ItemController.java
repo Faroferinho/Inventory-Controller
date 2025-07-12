@@ -4,17 +4,18 @@ import org.example.models.Item;
 import org.example.models.dto.ItemDTO;
 import org.example.safety.Constants;
 import org.example.services.ItemService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
-@Controller
+@RestController
+@CrossOrigin(
+        origins = "http://localhost:3000", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS}, allowedHeaders = "*", allowCredentials = "true", maxAge = 3600)
 public class ItemController implements CRUDController<Item, ItemDTO> {
+    @Autowired
     private ItemService service;
 
     @Override
