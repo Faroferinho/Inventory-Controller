@@ -21,22 +21,7 @@ function App() {
     localStorage.setItem('url', API_URL);
     localStorage.setItem('items', JSON.stringify(items));
     document.title = 'Inventory - Home';
-    fetchData();
   }, []);
-
-  const fetchData = async () => {
-    try {
-      const response = await fetch(API_URL);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      console.log('API data:\n', data);
-      localStorage.setItem('items', JSON.stringify(data));
-    } catch (error) {
-      console.error('There was a problem with the fetch operation:\n', error);
-    }
-  };
 
   return (
     <div className="App">

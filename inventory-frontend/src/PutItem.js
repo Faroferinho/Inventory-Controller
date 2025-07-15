@@ -11,7 +11,7 @@ function PutItem() {
   });
   const [editing, setEditing] = useState(null);
 
-  const API_URL = "http://localhost:8080/api/v1/item/";
+  const API_URL = localStorage.getItem('url') || "http://localhost:8080/api/v1/item/";
 
   // Alterar esse useEffect para definir o título da página
   useEffect(() => {
@@ -48,6 +48,14 @@ function PutItem() {
     }
   };
 
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setForm(prevForm => ({
+      ...prevForm,
+      [name]: type === 'checkbox' ? checked : (type === 'number' ? parseFloat(value) : value),
+    }));
+  };
+
   return (
     <div className="App">
       <div className="w3-container w3-padding-64 w3-margin">
@@ -58,35 +66,35 @@ function PutItem() {
             <label className="fixright" htmlFor="itemName">
               Item Name:
             </label>
-            <input className="w3-input w3-border w3-round-xxlarge" placeholder='Name' type="text" name="itemName" required  value={form.name} onChange={(e) => setForm({...form, name: e.target.value})} />
+            <input className="w3-input w3-border w3-round-xxlarge" placeholder='Name' type="text" name="name" required  value={form.name} onChange={(e) => handleChange(e)} />
           </div>
 
           <div className="w3-section w3-padding-16">
             <label className="fixright" htmlFor="itemName">
               Description:
             </label>
-            <input className="w3-input w3-border w3-round-xxlarge" placeholder='Description' type="text" name="itemDescription" required value={form.description} onChange={(e) => setForm({...form, description: e.target.value})} />
+            <input className="w3-input w3-border w3-round-xxlarge" placeholder='Description' type="text" name="description" required value={form.description} onChange={(e) => handleChange(e)} />
           </div>
           
           <div className="w3-section w3-padding-16">
             <label className="fixright" htmlFor="quantity">
               Quantity:
             </label>
-            <input className="w3-input w3-border w3-round-xxlarge" placeholder={form.quantity} type="number" name="quantity" required value={form.quantity} onChange={(e) => setForm({...form, quantity: e.target.value})} />
+            <input className="w3-input w3-border w3-round-xxlarge" placeholder={form.quantity} type="number" name="quantity" required value={form.quantity} onChange={(e) => handleChange(e)} />
           </div>
 
           <div className="w3-section w3-padding-16">
             <label className="fixright">
               Price:
             </label>
-            <input className="w3-input w3-border w3-round-xxlarge" placeholder={form.value} type="number" name="price" step="0.01" required value={form.value} onChange={(e) => setForm({...form, value: e.target.value})} />
+            <input className="w3-input w3-border w3-round-xxlarge" placeholder={form.value} type="number" name="value" step="0.01" required value={form.value} onChange={(e) => handleChange(e)} />
           </div>
           
           <div className="w3-section">
             <label className="align" htmlFor="available">
               Available:
             </label>
-            <input className="w3-check" type="checkbox" name="available" value={form.available} onChange={(e) => setForm({...form, available: e.target.value})} />
+            <input className="w3-check" type="checkbox" name="available" value={form.available} onChange={(e) => handleChange(e)} />
           </div>
           
           <button className="w3-button w3-right w3-indigo w3-margin-top w3-margin-bottom w3-round-xlarge" type='submit'>Register</button>
