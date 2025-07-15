@@ -9,3 +9,7 @@
 p {
   padding-right: 30px;
 }
+
+.align {
+    align-items: right;
+}

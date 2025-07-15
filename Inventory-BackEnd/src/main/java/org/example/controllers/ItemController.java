@@ -13,17 +13,28 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(
-        origins = "http://localhost:3000", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS}, allowedHeaders = "*", allowCredentials = "true", maxAge = 3600)
+        origins = "http://localhost:3000/",
+        methods = {
+                RequestMethod.GET,
+                RequestMethod.PUT,
+                RequestMethod.DELETE,
+                RequestMethod.POST
+        }
+    )
 public class ItemController implements CRUDController<Item, ItemDTO> {
     @Autowired
     private ItemService service;
 
     @Override
     @PostMapping(Constants.ITEM)
-    public ResponseEntity<Item> create(ItemDTO itemDTO) {
+    public ResponseEntity<Item> create(@RequestBody ItemDTO itemDTO) {
+        System.out.println("Item " + itemDTO.getName() + " Cadastrado");
+
         Item i = service.save(itemDTO);
         return ResponseEntity.ok(i);
     }
+
+    //TODO - Implement "PUT" Method
 
     @Override
     @GetMapping(Constants.ITEM)
@@ -33,13 +44,13 @@ public class ItemController implements CRUDController<Item, ItemDTO> {
 
     @Override
     @GetMapping(Constants.ITEM + "{id}")
-    public ResponseEntity<Optional<Item>> findById(String id) {
+    public ResponseEntity<Optional<Item>> findById(@PathVariable("id") String id) {
         return ResponseEntity.ok(service.findByID(id));
     }
 
     @Override
     @DeleteMapping(Constants.ITEM + "{id}")
-    public ResponseEntity<Void> deleteById(String id) {
+    public ResponseEntity<Void> deleteById(@PathVariable("id") String id) {
         service.deleteByID(id);
         return ResponseEntity.noContent().build();
     }

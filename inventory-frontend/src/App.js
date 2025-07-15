@@ -11,21 +11,18 @@ const API_URL = "http://localhost:8080/api/v1/item/"; // URL of the API
 
 function App() {
   const [items, setItems] = useState([]);
-  const [form, setForm] = useState({
-    name: '',
-    description: '',
-    value: '',
-    quantity: '',
-    available: false,
-  });
-  const [editing, setEditing] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-      fetch(API_URL)
-      .then((res)  => res.json())
-      .then((data) => setItems(data));
-    }, []);
+    fetch(API_URL)
+    .then((res)  => res.json())
+    .then((data) => setItems(data));
+    
+    localStorage.setItem('url', API_URL);
+    localStorage.setItem('items', JSON.stringify(items));
+    document.title = 'Inventory - Home';
+    fetchData();
+  }, []);
 
   const fetchData = async () => {
     try {
@@ -35,6 +32,7 @@ function App() {
       }
       const data = await response.json();
       console.log('API data:\n', data);
+      localStorage.setItem('items', JSON.stringify(data));
     } catch (error) {
       console.error('There was a problem with the fetch operation:\n', error);
     }
@@ -45,19 +43,19 @@ function App() {
       <link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css"/>
 
       <Router>
-        <nav class="w3-bar">
+        <nav className="w3-bar">
           <Link to="/put">
-            <div href="#" to="/" class="w3-bar-item w3-hover-indigo w3-button w3-border w3-border-deep-purple">
+            <div href="#" to="/" className="w3-bar-item w3-hover-indigo w3-button w3-border w3-border-deep-purple">
               Add
             </div>
           </Link>
           <Link to="/list">
-            <div href="#" class="w3-bar-item w3-hover-indigo w3-button w3-border w3-border-deep-purple">
+            <div href="#" className="w3-bar-item w3-hover-indigo w3-button w3-border w3-border-deep-purple">
               Table
             </div>
           </Link>
           <Link to="/login">
-            <div href="#" class="w3-bar-item w3-hover-indigo w3-button w3-border w3-border-deep-purple">
+            <div href="#" className="w3-bar-item w3-hover-indigo w3-button w3-border w3-border-deep-purple">
               User
             </div>
           </Link>
@@ -72,7 +70,7 @@ function App() {
         </Routes>
       </Router>
 
-      <footer class="w3-container">
+      <footer className="w3-container">
         <p className='w3-text-grey'>A basic Inventory, Stock and Purchase management system</p>
         <p className='w3-text-grey'>Developed by <a href="https://www.linkedin.com/in/conrado-perini-fracacio-b89889211/" className='w3-text-indigo'>Conrado</a>, for more projects like this here is my <a href=" https://github.com/Faroferinho" className='w3-text-indigo'>Repositories</a></p>
         <p className='w3-text-grey'>For more contact options email me at rpjolasunited@gmail.com</p>

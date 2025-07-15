@@ -10,12 +10,19 @@ function Table() {
     const listItems = localStorage.getItem('items');
     const items = listItems ? JSON.parse(listItems) : [];
 
+    const getItems = async () => {
+        const response = await fetch("http://localhost:8080/api/v1/item/");
+        if (response.ok) {
+            const data = await response.json();
+            localStorage.setItem('items', JSON.stringify(data));
+        }
+    }
+
     return (
-        <div className="App">
+        <div className="App" onLoad={getItems}>
             <table className="w3-table w3-border">
                 <thead>
                     <tr className="w3-indigo">
-                        <th>ID</th>
                         <th>Name</th>
                         <th>Description</th>
                         <th>Price</th>
@@ -27,7 +34,6 @@ function Table() {
                 <tbody>
                     {items.map((item, index) => (
                         <tr key={index}>
-                            <td>{item.id}</td>
                             <td>{item.name}</td>
                             <td>{item.description}</td>
                             <td>{item.value}</td>
