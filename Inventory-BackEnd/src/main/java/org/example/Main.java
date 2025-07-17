@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @OpenAPIDefinition(
         info = @Info(
                 title = "API Inventory",
-                version = "1.0",
+                version = "1.2",
                 description = "A Inventory, Stock and Purchase management system based on Java Spring-Boot," +
                         " this is designed to streamline and optimize the entire lifecycle of an organization assets," +
                         " from acquirement to use."

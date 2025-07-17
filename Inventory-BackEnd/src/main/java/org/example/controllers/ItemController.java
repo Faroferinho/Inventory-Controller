@@ -29,22 +29,23 @@ public class ItemController implements CRUDController<Item, ItemDTO> {
     @Override
     @PostMapping(Constants.ITEM)
     public ResponseEntity<Item> create(@RequestBody ItemDTO itemDTO) {
-        System.out.println("Item " + itemDTO.getName() + " Cadastrado");
+        //System.out.println("Item " + itemDTO.getName() + " Cadastrado");
 
-        Item i = service.save(itemDTO);
-        return ResponseEntity.ok(i);
+        Item savedItem = service.save(itemDTO);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedItem);
     }
 
     @Override
     @PutMapping(Constants.ITEM + "{id}")
     public ResponseEntity<Item> update(@PathVariable("id") String id, @RequestBody ItemDTO itemDTO) {
-        System.out.println("Item " + itemDTO.getName() + " de id " + id + " Atualizado com sucesso");
+        //System.out.println("Item " + itemDTO.getName() + " de id " + id + " Atualizado com sucesso");
         Item item = new Item(itemDTO);
         item.setId(id);
 
         Item updatedItem = service.change(item);
 
-        System.out.println("Item " + item.getName() + " de id " + item.getId() + " Atualizado com sucesso");
+        //System.out.println("Item " + item.getName() + " de id " + item.getId() + " Atualizado com sucesso");
 
         return ResponseEntity.status(HttpStatus.OK).body(updatedItem);
     }

@@ -1,0 +1,58 @@
+package org.example.controllers;
+
+import org.example.documents.DTOs.LogInDTO;
+import org.example.documents.DTOs.ResponseToken;
+import org.example.documents.User;
+import org.example.safety.Constants;
+import org.example.safety.JWTTokenProvider;
+import org.example.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.HashMap;
+import java.util.List;
+
+@RestController
+@CrossOrigin(
+        origins = "http://localhost:3000",
+        methods = {
+                RequestMethod.GET,
+                RequestMethod.PUT,
+                RequestMethod.POST,
+                RequestMethod.DELETE
+        }
+)
+public class LoginController {
+    @Autowired
+    private JWTTokenProvider provider;
+    @Autowired
+    private UserService service;
+
+    private HashMap<String, String> fillUserList(){
+        HashMap<String, String> userList = new HashMap<>();
+        List<User> users = service.findAll();
+
+        for(User u : users){
+            userList.put(u.getEmail(), u.getPassword());
+        }
+
+        return userList;
+    }
+
+    @GetMapping(Constants.LOGIN)
+    public ResponseToken login(LogInDTO dto){
+        HashMap<String, String> userList = fillUserList();
+
+        if(userList.containsKey(dto.getUsername())){
+            if (userList.get(dto.getUsername()).equals(dto.getPassword())){
+                String token = provider.tokenGenerator(dto.getUsername());
+
+                return new ResponseToken("Authorized", token);
+            }
+        }
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid User and/or Password");
+    }
+}

@@ -20,6 +20,7 @@ function App() {
     
     localStorage.setItem('items', JSON.stringify(items));
     document.title = 'Inventory - Home';
+    
   }, []);
 
   return (
