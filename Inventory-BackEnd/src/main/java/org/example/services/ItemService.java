@@ -20,6 +20,11 @@ public class ItemService implements CRUDServices<Item, ItemDTO> {
     }
 
     @Override
+    public Item change(Item item) {
+        return repository.save(item);
+    }
+
+    @Override
     public List<Item> findAll() {
         return repository.findAll();
     }

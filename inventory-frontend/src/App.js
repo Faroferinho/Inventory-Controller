@@ -7,7 +7,7 @@ import List from './Table';
 import Put from './PutItem';
 import Register from './Register';
 
-const API_URL = "http://localhost:8080/api/v1/item/"; // URL of the API
+export const API_URL = "http://localhost:8080/api/v1/item/"; // URL of the API
 
 function App() {
   const [items, setItems] = useState([]);
@@ -18,7 +18,6 @@ function App() {
     .then((res)  => res.json())
     .then((data) => setItems(data));
     
-    localStorage.setItem('url', API_URL);
     localStorage.setItem('items', JSON.stringify(items));
     document.title = 'Inventory - Home';
   }, []);
@@ -51,6 +50,7 @@ function App() {
           <Route path="/register" element={<Register/>} />
           <Route path="/list" element={<List/>} />
           <Route path="/put" element={<Put/>} />
+          <Route path="/put/:id" element={<Put/>} />
           <Route path="*" element={<Login/>} />
         </Routes>
       </Router>

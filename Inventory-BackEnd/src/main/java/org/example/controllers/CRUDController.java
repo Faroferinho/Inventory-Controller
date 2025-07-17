@@ -1,17 +1,18 @@
 package org.example.controllers;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface CRUDController<Media, MediaDTO> {
-    ResponseEntity<Media> create(MediaDTO dto);
+public interface CRUDController<Document, DocumentDTO> {
+    ResponseEntity<Document> create(DocumentDTO dto);
 
-    ResponseEntity<List<Media>> findAll();
+    ResponseEntity<Document> update(String id, DocumentDTO dto);
 
-    ResponseEntity<Optional<Media>> findById(String id);
+    ResponseEntity<List<Document>> findAll();
+
+    ResponseEntity<Optional<Document>> findById(String id);
 
     ResponseEntity<Void> deleteById(String id);
 }

@@ -5,6 +5,7 @@ import org.example.models.dto.ItemDTO;
 import org.example.safety.Constants;
 import org.example.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +35,19 @@ public class ItemController implements CRUDController<Item, ItemDTO> {
         return ResponseEntity.ok(i);
     }
 
-    //TODO - Implement "PUT" Method
+    @Override
+    @PutMapping(Constants.ITEM + "{id}")
+    public ResponseEntity<Item> update(@PathVariable("id") String id, @RequestBody ItemDTO itemDTO) {
+        System.out.println("Item " + itemDTO.getName() + " de id " + id + " Atualizado com sucesso");
+        Item item = new Item(itemDTO);
+        item.setId(id);
+
+        Item updatedItem = service.change(item);
+
+        System.out.println("Item " + item.getName() + " de id " + item.getId() + " Atualizado com sucesso");
+
+        return ResponseEntity.status(HttpStatus.OK).body(updatedItem);
+    }
 
     @Override
     @GetMapping(Constants.ITEM)

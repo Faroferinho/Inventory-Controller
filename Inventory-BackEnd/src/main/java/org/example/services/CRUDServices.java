@@ -6,6 +6,8 @@ import java.util.Optional;
 public interface CRUDServices<Document, DocumentDTO> {
     Document save(DocumentDTO dto);
 
+    Document change(Document document);
+
     List<Document> findAll();
 
     Optional<Document> findByID(String id);

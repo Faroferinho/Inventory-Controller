@@ -1,49 +1,66 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './App.css';
+import { API_URL } from './App';
 
 function Table() {
     const [items, setItems] = useState([]);
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
-    
-    useEffect(() => {
-        document.title = 'Inventory - Table';
-        getItems();
-    }, []);
 
-    const getItems = async () => {
+    const navigate = useNavigate();
+    
+    const getItems = useCallback(async () => {
         setLoading(true);
         
-        const response = await fetch("http://localhost:8080/api/v1/item/");
+        try {
+            const response = await fetch(API_URL);
 
-        if (response.ok) {
-            const data = await response.json();
-            localStorage.setItem('items', JSON.stringify(data));
-            setItems(data);
-            setError(null);
-        }else {
-            setError('Failed to fetch items');
+            if (response.ok) {
+                const data = await response.json();
+                localStorage.setItem('items', JSON.stringify(data));
+                setItems(data);
+                setError(null);
+            }else {
+                setError('Failed to fetch items');
+                throw new Error('Failed to fetch items');
+            }
+        }catch (err) {
+            setError(err.message);
+        }finally {
+            setLoading(false);
         }
-        setLoading(false);
-    };
+    }, []);
 
-    const handleEdit = (item) => {
-        localStorage.setItem('editingItem', JSON.stringify(item));
-        window.location.href = '/put'; // Redirect to the PutItem page for editing
-    }
+    const handleEdit = (id) => {
+        navigate(`/put/${id}`);
+    };
 
     const handleDelete = async (id) => {
         const response = await fetch(`http://localhost:8080/api/v1/item/${id}`, {
             method: 'DELETE',
         });
-        if (response.ok) {
-            alert('Item deleted successfully!');
-            getItems(); // Refresh the item list after deletion
+        try {
+            if (response.ok) {
+                alert('Item deleted successfully!');
+                setItems(prevItems => prevItems.filter(item => item.id !== id));
+            }
+            else {
+                alert('Failed to delete item. Please try again.');
+                setError('Failed to delete item');
+                console.error('Error deleting item:', response.statusText);
+                throw new Error('Failed to delete item');
+            }
+        } catch (err) {
+            setError(err.message);
+            console.error('Error deleting item:', err);
         }
-        else {
-            alert('Failed to delete item. Please try again.');
-        }
-    }
+    };
+
+    useEffect(() => {
+        document.title = 'Inventory - Table';
+        getItems();
+    }, [getItems]);
 
     return (
         <div className="App">
@@ -69,7 +86,7 @@ function Table() {
                             <td>{item.quantity}</td>
                             <td>{item.available ? 'Yes' : 'No'}</td>
                             <td>
-                                <button className="w3-button w3-indigo w3-round-xlarge" onClick={() => handleEdit(item)}>Edit</button>
+                                <button className="w3-button w3-indigo w3-round-xlarge" onClick={() => handleEdit(item.id)}>Edit</button>
                                 <button className="w3-button w3-red w3-round-xlarge" onClick={() => handleDelete(item.id)}>Delete</button>
                             </td>
                         </tr>

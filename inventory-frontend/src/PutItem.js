@@ -1,4 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import './App.css';
+import { API_URL } from './App';
 import './Login.css';
 
 function PutItem() {
@@ -10,13 +13,18 @@ function PutItem() {
     available : false
   });
   const [editing, setEditing] = useState(null);
+  const navigate = useNavigate();
 
-  const API_URL = localStorage.getItem('url') || "http://localhost:8080/api/v1/item/";
+  const { id } = useParams();
+  const isEditing = Boolean(id);
 
   // Alterar esse useEffect para definir o título da página
   useEffect(() => {
     document.title = 'Inventory - Register Item';
-  }, []);
+    if (isEditing) {
+      fetchItem(id);
+    }
+  }, []); // Dependências do useEffect
 
   const handleSubmit = async (e) => { // <--- Adicione 'e' aqui
     e.preventDefault(); // <--- Adicione esta linha no início
@@ -26,7 +34,7 @@ function PutItem() {
 
     console.log('Submitting item:', JSON.stringify(newItem));
 
-    const response = await fetch(API_URL, {
+    const response = await fetch(API_URL + (id || ''), {
       method,
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(newItem)
@@ -54,6 +62,28 @@ function PutItem() {
       ...prevForm,
       [name]: type === 'checkbox' ? checked : (type === 'number' ? parseFloat(value) : value),
     }));
+  };
+
+  const fetchItem = async (id) => {
+    try {
+      const response = await fetch(`${API_URL}${id}`);
+      if (response.ok) {
+        const data = await response.json();
+        setForm({
+          name: data.name,
+          description: data.description,
+          value: data.value,
+          quantity: data.quantity,
+          available: data.available,
+        });
+        setEditing(data.id);
+      } else {
+        alert('Failed to fetch item details. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error fetching item:', error);
+      alert('Error fetching item details. Please try again.');
+    }
   };
 
   return (
