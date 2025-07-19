@@ -3,7 +3,11 @@ package org.example.controllers;
 import org.example.documents.DTOs.UserDTO;
 import org.example.documents.User;
 import org.example.safety.Constants;
+<<<<<<< HEAD
 import org.example.services.UserService;
+=======
+import org.example.services.UserServices;
+>>>>>>> 282758f9714b9cf5f17e25c3c9b7991622c1ecbb
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +28,11 @@ import java.util.Optional;
 )
 public class UserController implements CRUDController<User, UserDTO> {
     @Autowired
+<<<<<<< HEAD
     private UserService service;
+=======
+    private UserServices service;
+>>>>>>> 282758f9714b9cf5f17e25c3c9b7991622c1ecbb
 
     @Override
     @PostMapping(Constants.USER)
@@ -59,7 +67,10 @@ public class UserController implements CRUDController<User, UserDTO> {
     }
 
     @Override
+<<<<<<< HEAD
     @DeleteMapping(Constants.USER + "{id}")
+=======
+>>>>>>> 282758f9714b9cf5f17e25c3c9b7991622c1ecbb
     public ResponseEntity<Void> deleteById(@PathVariable String id) {
         service.deleteByID(id);
         return ResponseEntity.noContent().build();
