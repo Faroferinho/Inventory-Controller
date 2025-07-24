@@ -2,6 +2,7 @@ package org.example.controllers;
 
 import org.example.documents.DTOs.LogInDTO;
 import org.example.documents.DTOs.ResponseToken;
+import org.example.documents.DTOs.UserDTO;
 import org.example.documents.User;
 import org.example.safety.Constants;
 import org.example.safety.JWTTokenProvider;
@@ -17,13 +18,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(
-        origins = "http://localhost:3000",
-        methods = {
-                RequestMethod.GET,
-                RequestMethod.PUT,
-                RequestMethod.POST,
-                RequestMethod.DELETE
-        }
+        origins = "http://localhost:3000"
 )
 public class LoginController {
     @Autowired
@@ -36,14 +31,15 @@ public class LoginController {
         List<User> users = service.findAll();
 
         for(User u : users){
+            System.out.println("email: " + u.getEmail() + "\n Password: " + u.getPassword() + "\n");
             userList.put(u.getEmail(), u.getPassword());
         }
 
         return userList;
     }
 
-    @GetMapping(Constants.LOGIN)
-    public ResponseToken login(LogInDTO dto){
+    @PostMapping(Constants.LOGIN)
+    public ResponseToken login(@RequestBody LogInDTO dto){
         HashMap<String, String> userList = fillUserList();
 
         if(userList.containsKey(dto.getUsername())){
@@ -54,5 +50,19 @@ public class LoginController {
             }
         }
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid User and/or Password");
+    }
+
+    @PostMapping(Constants.REGISTER)
+    public ResponseToken register(@RequestBody UserDTO dto){
+        HashMap<String, String> userList = fillUserList();
+
+        if(!userList.containsKey(dto.getEmail())){
+            service.save(dto);
+
+            String token = provider.tokenGenerator(dto.getEmail());
+
+            return new ResponseToken("Authorized", token);
+        }
+        return null;
     }
 }

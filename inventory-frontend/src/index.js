@@ -8,7 +8,6 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <App />
-    <link rel="icon" href="..\public\box-icon.png" />
   </React.StrictMode>
 );
 

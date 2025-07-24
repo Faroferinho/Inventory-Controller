@@ -6,15 +6,16 @@ import Login from './Login';
 import List from './Table';
 import Put from './PutItem';
 import Register from './Register';
+import User from './User';
 
-export const API_URL = "http://localhost:8080/api/v1/item/"; // URL of the API
+export const API_ITEMS_URL = "http://localhost:8080/api/v1/item/"; // URL of the API
+export const API_USERS_URL = "http://localhost:8081/api/v1/"; // URL of the API
 
 function App() {
   const [items, setItems] = useState([]);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(API_URL)
+    fetch(API_ITEMS_URL)
     .then((res)  => res.json())
     .then((data) => setItems(data));
     
@@ -52,13 +53,14 @@ function App() {
           <Route path="/list" element={<List/>} />
           <Route path="/put" element={<Put/>} />
           <Route path="/put/:id" element={<Put/>} />
+          <Route path="/user" element={<User/>} />
           <Route path="*" element={<Login/>} />
         </Routes>
       </Router>
 
       <footer className="w3-container">
         <p className='w3-text-grey'>A basic Inventory, Stock and Purchase management system</p>
-        <p className='w3-text-grey'>Developed by <a href="https://www.linkedin.com/in/conrado-perini-fracacio-b89889211/" className='w3-text-indigo'>Conrado</a>, for more projects like this here is my <a href=" https://github.com/Faroferinho" className='w3-text-indigo'>Repositories</a></p>
+        <p className='w3-text-grey'>Developed by <a href="https://www.linkedin.com/in/conrado-perini-fracacio-b89889211/" className='w3-text-indigo'>Conrado</a>, for more projects like this here are my <a href=" https://github.com/Faroferinho" className='w3-text-indigo'>Repositories</a></p>
         <p className='w3-text-grey'>For more contact options email me at rpjolasunited@gmail.com</p>
       </footer> 
     </div>

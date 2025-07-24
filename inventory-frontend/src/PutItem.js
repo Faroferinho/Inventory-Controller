@@ -1,7 +1,7 @@
 import React, { use, useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './App.css';
-import { API_URL } from './App';
+import { API_ITEMS_URL } from './App';
 import './Login.css';
 
 function PutItem() {
@@ -34,7 +34,7 @@ function PutItem() {
 
     console.log('Submitting item:', JSON.stringify(newItem));
 
-    const response = await fetch(API_URL + (id || ''), {
+    const response = await fetch(API_ITEMS_URL + (id || ''), {
       method,
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(newItem)
@@ -66,7 +66,7 @@ function PutItem() {
 
   const fetchItem = async (id) => {
     try {
-      const response = await fetch(`${API_URL}${id}`);
+      const response = await fetch(`${API_ITEMS_URL}${id}`);
       if (response.ok) {
         const data = await response.json();
         setForm({

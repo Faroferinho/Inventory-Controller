@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './App.css';
-import { API_URL } from './App';
+import { API_ITEMS_URL } from './App';
 
 function Table() {
     const [items, setItems] = useState([]);
@@ -14,7 +14,7 @@ function Table() {
         setLoading(true);
         
         try {
-            const response = await fetch(API_URL);
+            const response = await fetch(API_ITEMS_URL);
 
             if (response.ok) {
                 const data = await response.json();
