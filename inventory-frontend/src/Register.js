@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { API_USERS_URL } from './App'; // Import the API URL for users
 import './Login.css';
@@ -11,6 +10,7 @@ function Register() {
         email: "",
         password: ""
     });
+    const [redirect, setRedirect] = useState(false);
     const navigate = useNavigate();
 
     // Alterar esse useEffect para definir o título da página
@@ -37,7 +37,18 @@ function Register() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(form)
-        }).catch(error => {
+        }).then(
+            data => {
+                if (data.ok) {
+                    localStorage.setItem('user', data.headers.get('Authorization'));
+                    // Optionally, you can set a state to show a success message
+                    setRedirect(true);
+                    navigate('/user'); // Redirect to user profile after successful login
+                } else {
+                    throw new Error('Registration failed');
+                }
+            }
+        ).catch(error => {
             console.error('Error during registration:', error);
             // Handle registration error, e.g., show an error message
         });

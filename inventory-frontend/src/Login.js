@@ -7,7 +7,7 @@ import { API_USERS_URL } from './App'; // Import the API URL for users
 
 function Login() {
     const [form, setForm] = useState({
-        email: "",
+        username: "",
         password: ""
     });
     const [redirect, setRedirect] = useState(false);
@@ -28,6 +28,9 @@ function Login() {
     };
 
     const handleSubmit = (e) => {
+        console.log("Form:\n", form);
+        console.log("URL:", API_USERS_URL + "login/");
+
         e.preventDefault();
         
         fetch(API_USERS_URL + "login/", {
@@ -39,15 +42,12 @@ function Login() {
         })
         .then(response => {
             if (response.ok) {
-                return response.json();
+                localStorage.setItem('user', response.headers.get('Authorization'));
+                setRedirect(true);
+                navigate('/user'); // Redirect to user profile after successful login
             } else {
                 throw new Error('Login failed');
             }
-        })
-        .then(data => {
-            console.log('Login successful:', data);
-            setRedirect(true);
-            navigate('/user'); // Redirect to user profile after successful login
         })
         .catch(error => {
             console.error('Error during login:', error);
@@ -64,7 +64,7 @@ function Login() {
                     <label className="fixright" htmlFor="username">
                         User
                     </label>
-                    <input className="w3-input w3-border w3-round-xxlarge" type="text" id="email" name="email" onChange={handleChange} required/>
+                    <input className="w3-input w3-border w3-round-xxlarge" type="text" id="username" name="username" onChange={handleChange} required/>
                 </div>
 
                 <div className="w3-section w3-padding-16">

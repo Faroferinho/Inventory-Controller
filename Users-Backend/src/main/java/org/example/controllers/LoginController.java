@@ -31,7 +31,6 @@ public class LoginController {
         List<User> users = service.findAll();
 
         for(User u : users){
-            System.out.println("email: " + u.getEmail() + "\n Password: " + u.getPassword() + "\n");
             userList.put(u.getEmail(), u.getPassword());
         }
 
@@ -43,6 +42,11 @@ public class LoginController {
         HashMap<String, String> userList = fillUserList();
 
         if(userList.containsKey(dto.getUsername())){
+            String u = userList.get(dto.getUsername());
+
+            System.out.println("User: " + dto.getUsername() + ", Password: " + dto.getPassword());
+            System.out.println("Expected Password: " + u);
+
             if (userList.get(dto.getUsername()).equals(dto.getPassword())){
                 String token = provider.tokenGenerator(dto.getUsername());
 
